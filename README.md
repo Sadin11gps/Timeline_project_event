@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Countdown</title>
+<style>
+body {
+  margin:0; padding:0;
+  font-family: Arial, sans-serif;
+  background:#f0f2f5;
+  display:flex; justify-content:center; align-items:center;
+  height:100vh;
+  transition:1s;
+}
+.container {
+  text-align:center;
+  background:#ffffff;
+  padding:50px 30px;
+  border-radius:15px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.2);
+}
+h1 {color:red; margin-bottom:15px;}
+p {color:#ff69b4; margin-bottom:20px;}
+.timer {
+  font-size:40px;
+  font-weight:bold;
+  color:gold;
+  margin-bottom:20px;
+}
+#event-over{
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:black; color:gold;
+  display:flex; justify-content:center; align-items:center;
+  font-size:50px;font-weight:bold;
+  text-align:center;
+  z-index:9999;
+}
+.btn{
+  background:#4CAF50;color:white;
+  padding:12px 25px;
+  border-radius:8px;
+  font-size:18px;
+  display:inline-block;
+  text-decoration:none;
+}
+</style>
+</head>
+<body>
+
+<div id="event-over">YOUR EVENT TIME OVER!</div>
+
+<div class="container" id="main-container">
+  <h1>✨ গুরুত্বপূর্ণ Refer আপডেট চলছে 🚀</h1>
+  <p>দয়া করে অপেক্ষা করুন</p>
+
+  <div class="timer" id="countdown">00:00:00</div>
+
+  <a href="https://t.me/amrrdsteam" class="btn" target="_blank">Open Channel</a>
+</div>
+
+<script>
+const endTime = new Date("2025-11-24T00:00:00").getTime();
+
+function updateTimer() {
+  const now = new Date().getTime();
+  const diff = endTime - now;
+
+  if(diff <= 0){
+    document.getElementById("main-container").style.display="none";
+    document.body.style.background="black";
+    document.getElementById("event-over").style.display="flex";
+    clearInterval(loop);
+    return;
+  }
+
+  const hours = Math.floor(diff / (1000*60*60));
+  const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+  const seconds = Math.floor((diff % (1000*60)) / 1000);
+
+  document.getElementById("countdown").innerText =
+    `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+}
+
+updateTimer();
+const loop = setInterval(updateTimer,1000);
+</script>
+
+</body>
+</html>
