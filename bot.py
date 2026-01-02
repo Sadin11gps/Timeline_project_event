@@ -9,9 +9,10 @@ from datetime import datetime
 import os
 
 # --- কনফিগারেশন ---
-API_TOKEN = os.getenv('BOT_TOKEN', '8373048274:AAG5z--eYoWDpek1XeoY3eyXtdlsOhI0Et4')
+API_TOKEN = os.getenv('BOT_TOKEN', '8059084521:AAGuVxr-6-X0Izld_uOD4nazPqd3yaKQgzo')
 ADMIN_IDS = [7702378694, 7475964655]  # দুইজন অ্যাডমিন
 ADMIN_PASSWORD = "Rdsvai11"
+CHANNEL_USERNAME = "amrrdsteam"
 
 bot = telebot.TeleBot(API_TOKEN)
 
@@ -21,6 +22,8 @@ app = Flask(__name__)
 LANGUAGES = {
     'en': {
         'welcome': "👋 Welcome!\n\nℹ️ This bot helps you earn money by doing simple tasks.\n\nBy using this Bot, you automatically agree to the Terms of Use.👉 https://telegra.ph/FAQ----CRAZY-MONEY-BUX-12-25-2",
+        'channel_join': "⚠️ Please join our channel to use the bot:",
+        'channel_joined': "✅ Verified! Now you can use the bot.",
         'balance': "💰 Your balance: ${:.4f}",
         'tasks': "👇 Please select a task:",
         'task_desc': "⏳ Review time: 74 min ⏳\n\n📋 Task: 📱 G account (FAST CHECK)\n\n📄 Description: 🔐 MANDATORY!\nYou must use only the email and password provided by the Telegram bot to register.",
@@ -35,6 +38,8 @@ LANGUAGES = {
         'profile': "👤 <b>{}</b>\n\n\n💰 <b>Total Balance:</b> \( {:.4f}\n\n📤 <b>Total Withdraw:</b> \){:.4f}\n\n🔒 <b>Account:</b> Active✅",
         'history_empty': "📭 You haven't completed any tasks yet.",
         'history_header': "📋 <b>Your Task History:</b>\n\n",
+        'leaderboard': "🏆 <b>Top 10 Earners</b>\n\n",
+        'stats': "📊 <b>Bot Statistics</b>\n\n👥 Total Users: {}\n💰 Total Earned: \( {:.4f}\n📤 Total Withdrawn: \){:.4f}",
         'language': "🌍 Choose language:",
         'lang_set': "✅ Language set to English!",
         'no_pending_tasks': "📭 No pending tasks.",
@@ -45,12 +50,11 @@ LANGUAGES = {
         'broadcast_success': "✅ Broadcast sent to {} users!",
         'send_success': "✅ Message sent to user!",
         'user_not_found': "❌ User not found.",
-        'user_list_header': "👥 <b>User List (Page {}):</b>\n\n",
-        'user_list_format': "🆔 <b>ID:</b> <code>{}</code>\n👤 <b>Name:</b> {} {}\n💰 <b>Balance:</b> \( {:.4f}\n👥 <b>Referrals:</b> {}\n📤 <b>Withdrawn:</b> \){:.4f}\n\n",
-        'no_users': "📭 No users yet.",
     },
     'bn': {
         'welcome': "👋 স্বাগতম!\n\nℹ️ এই বটে সিম্পল টাস্ক করে ডলার আর্ন করুন।\n\nবট ব্যবহার করে আপনি অটোম্যাটিক টার্মস অ্যাগ্রি করছেন।👉 https://telegra.ph/FAQ----CRAZY-MONEY-BUX-12-25-2",
+        'channel_join': "⚠️ বট ব্যবহার করতে আমাদের চ্যানেলে জয়েন করুন:",
+        'channel_joined': "✅ ভেরিফাইড! এখন বট ব্যবহার করতে পারবেন।",
         'balance': "💰 আপনার ব্যালেন্স: ${:.4f}",
         'tasks': "👇 একটা টাস্ক সিলেক্ট করুন:",
         'task_desc': "⏳ রিভিউ টাইম: ৭৪ মিনিট ⏳\n\n📋 টাস্ক: 📱 G account (FAST CHECK)\n\n📄 বর্ণনা: 🔐 অবশ্যই বট দেওয়া ইমেইল ও পাসওয়ার্ড দিয়ে রেজিস্টার করতে হবে।",
@@ -65,6 +69,8 @@ LANGUAGES = {
         'profile': "👤 <b>{}</b>\n\n\n💰 <b>টোটাল ব্যালেন্স:</b> \( {:.4f}\n\n📤 <b>টোটাল উইথড্র:</b> \){:.4f}\n\n🔒 <b>অ্যাকাউন্ট:</b> অ্যাকটিভ✅",
         'history_empty': "📭 আপনি এখনো কোনো টাস্ক করেননি।",
         'history_header': "📋 <b>আপনার টাস্ক হিস্ট্রি:</b>\n\n",
+        'leaderboard': "🏆 <b>টপ ১০ আর্নার</b>\n\n",
+        'stats': "📊 <b>বট স্ট্যাটিস্টিকস</b>\n\n👥 টোটাল ইউজার: {}\n💰 টোটাল আর্ন: \( {:.4f}\n📤 টোটাল উইথড্র: \){:.4f}",
         'language': "🌍 ভাষা সিলেক্ট করুন:",
         'lang_set': "✅ ভাষা বাংলায় সেট করা হয়েছে!",
         'no_pending_tasks': "📭 কোনো পেন্ডিং টাস্ক নেই।",
@@ -75,9 +81,6 @@ LANGUAGES = {
         'broadcast_success': "✅ {} জন ইউজারকে ব্রডকাস্ট পাঠানো হয়েছে!",
         'send_success': "✅ মেসেজ পাঠানো হয়েছে!",
         'user_not_found': "❌ ইউজার পাওয়া যায়নি।",
-        'user_list_header': "👥 <b>ইউজার লিস্ট (পেজ {}):</b>\n\n",
-        'user_list_format': "🆔 <b>ID:</b> <code>{}</code>\n👤 <b>নাম:</b> {} {}\n💰 <b>ব্যালেন্স:</b> \( {:.4f}\n👥 <b>রেফারেল:</b> {}\n📤 <b>উইথড্র:</b> \){:.4f}\n\n",
-        'no_users': "📭 এখনো কোনো ইউজার নেই।",
     }
 }
 
@@ -136,7 +139,7 @@ def generate_full_creds():
     recovery = f"{recovery_prefix}@hotmail.com"
     return f_name, l_name, password, email, recovery
 
-# --- কিবোর্ডস (Leaderboard & Statistics রিমুভ করা) ---
+# --- কিবোর্ডস ---
 def main_menu():
     markup = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
     markup.add('💰 Balance', '📋 Tasks')
@@ -150,7 +153,7 @@ def admin_menu():
     markup.add('📝 Task History', '💸 Withdraw History')
     markup.add('💰 Manage Balance', '⚙️ Set Task Price')
     markup.add('📢 Broadcast', '📩 Send Message')
-    markup.add('👥 User List', '🏠 Exit Admin')
+    markup.add('🏠 Exit Admin')
     return markup
 
 def language_menu():
@@ -169,8 +172,16 @@ def get_task_price():
     return price
 
 def is_menu_button(text):
-    buttons = ['💰 Balance', '📋 Tasks', '📤 Withdraw', '👤 Profile', '📋 History', '🤔 FAQ', '👥 My Referrals', '🌍 Language', '❌ Cancel', '🏠 Exit Admin', 'TRX', '✅ Account registered', '▶️ Start', '🔙 Back', '🇺🇸 English', '🇧🇩 বাংলা', '📢 Broadcast', '📩 Send Message', '📝 Task History', '💸 Withdraw History', '💰 Manage Balance', '⚙️ Set Task Price', '👥 User List']
+    buttons = ['💰 Balance', '📋 Tasks', '📤 Withdraw', '👤 Profile', '📋 History', '🤔 FAQ', '👥 My Referrals', '🌍 Language', '❌ Cancel', '🏠 Exit Admin', 'TRX', '✅ Account registered', '▶️ Start', '🔙 Back', '🇺🇸 English', '🇧🇩 বাংলা', '📢 Broadcast', '📩 Send Message', '📝 Task History', '💸 Withdraw History', '💰 Manage Balance', '⚙️ Set Task Price']
     return text in buttons
+
+# --- চ্যানেল ভেরিফিকেশন ---
+def is_member(user_id):
+    try:
+        member = bot.get_chat_member(f"@{CHANNEL_USERNAME}", user_id)
+        return member.status in ['member', 'administrator', 'creator']
+    except:
+        return False
 
 # --- হেল্পার ফাংশন ---
 def get_user_lang(user_id):
@@ -181,7 +192,7 @@ def get_user_lang(user_id):
     conn.close()
     return row[0] if row and row[0] else 'en'
 
-# --- /start (কোনো ভেরিফাই নেই) ---
+# --- /start ---
 @bot.message_handler(commands=['start'])
 def start_cmd(message):
     user_id = message.from_user.id
@@ -189,6 +200,13 @@ def start_cmd(message):
 
     lang = get_user_lang(user_id)
     texts = LANGUAGES[lang]
+
+    if not is_member(user_id):
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton("Join Channel", url=f"https://t.me/{CHANNEL_USERNAME}"))
+        markup.add(types.InlineKeyboardButton("I Joined ✅", callback_data="check_join"))
+        bot.send_message(user_id, texts['channel_join'] + f" https://t.me/{CHANNEL_USERNAME}", reply_markup=markup)
+        return
 
     conn = sqlite3.connect('socialbux.db', check_same_thread=False)
     cursor = conn.cursor()
@@ -202,6 +220,18 @@ def start_cmd(message):
     conn.close()
 
     bot.send_message(user_id, texts['welcome'], reply_markup=main_menu())
+
+@bot.callback_query_handler(func=lambda call: call.data == "check_join")
+def check_join_callback(call):
+    user_id = call.from_user.id
+    lang = get_user_lang(user_id)
+    texts = LANGUAGES[lang]
+
+    if is_member(user_id):
+        bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text=texts['channel_joined'])
+        bot.send_message(user_id, texts['welcome'], reply_markup=main_menu())
+    else:
+        bot.answer_callback_query(call.id, "You haven't joined the channel yet!", show_alert=True)
 
 # --- ল্যাঙ্গুয়েজ চেঞ্জ ---
 @bot.message_handler(func=lambda m: m.text in ['🇺🇸 English', '🇧🇩 বাংলা'])
@@ -221,6 +251,10 @@ def language_handler(message):
     lang = get_user_lang(message.from_user.id)
     texts = LANGUAGES[lang]
     bot.send_message(message.from_user.id, texts['language'], reply_markup=language_menu())
+
+# --- লিডারবোর্ড (রিমুভ করা) ---
+
+# --- স্ট্যাটিস্টিকস (রিমুভ করা) ---
 
 # --- অ্যাডমিন লগইন ---
 @bot.message_handler(commands=['admin'])
@@ -300,33 +334,6 @@ def admin_send_final(message, target_id):
         bot.send_message(message.chat.id, texts['send_success'], reply_markup=admin_menu())
     except:
         bot.send_message(message.chat.id, texts['user_not_found'], reply_markup=admin_menu())
-
-# --- User List বাটন ---
-@bot.message_handler(func=lambda m: m.text == '👥 User List' and m.from_user.id in ADMIN_IDS)
-def admin_user_list(message):
-    admin_lang = get_user_lang(message.from_user.id)
-    texts = LANGUAGES[admin_lang]
-    
-    conn = sqlite3.connect('socialbux.db', check_same_thread=False)
-    cursor = conn.cursor()
-    cursor.execute("SELECT id, first_name, username, balance, ref_count FROM users ORDER BY id ASC")
-    rows = cursor.fetchall()
-    conn.close()
-    
-    if not rows:
-        bot.send_message(message.chat.id, texts['no_users'])
-        return
-    
-    text = texts['user_list_header'].format(1)
-    for user in rows:
-        u_id, f_name, u_name, bal, ref_count = user
-        username_str = f"@{u_name}" if u_name else "N/A"
-        conn = sqlite3.connect('socialbux.db', check_same_thread=False)
-        wd_total = conn.execute("SELECT SUM(amount) FROM withdraw_history WHERE user_id=? AND status='Paid'", (u_id,)).fetchone()[0] or 0.0
-        conn.close()
-        text += texts['user_list_format'].format(u_id, f_name, username_str, bal, ref_count, wd_total)
-    
-    bot.send_message(message.chat.id, text, parse_mode="HTML", reply_markup=admin_menu())
 
 # --- মেইন হ্যান্ডলার ---
 @bot.message_handler(func=lambda message: True)
@@ -432,8 +439,7 @@ def handle_all(message):
 
             admin_msg = f"🔔 <b>New Task Submission</b>\n\n👤 <b>User ID:</b> <code>{user_id}</code>\n👤 <b>Name:</b> {fn_user}\n👤 <b>Username:</b> {u_name}\n\n      🔰<b>Task Information</b>🔰\n\n📧 <b>Gmail:</b> <code>{gmail}</code>\n🔑 <b>Pass:</b> <code>{password}</code>\n🔄 <b>Recovery:</b> <code>{recovery}</code>"
             adm_m = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton("Approve", callback_data=f"app_{user_id}_{tid}"), types.InlineKeyboardButton("Reject", callback_data=f"rej_{user_id}_{tid}"))
-            for admin_id in ADMIN_IDS:
-                bot.send_message(admin_id, admin_msg, parse_mode="HTML", reply_markup=adm_m)
+            bot.send_message(ADMIN_ID, admin_msg, parse_mode="HTML", reply_markup=adm_m)
         else:
             bot.send_message(user_id, "❌ No pending task found.")
         return
@@ -640,7 +646,7 @@ def callback_handler(call):
     except Exception as e:
         print("Error in callback:", e)
 
-print("🤖 Gmail Factory Bot is Running - Leaderboard & Statistics Removed!")
+print("🤖 Crazy Money Bux Bot is Running - Dual Admin + Public Channel + Unlimited Tasks!")
 
 # --- Webhook routes ---
 @app.route('/' + API_TOKEN, methods=['POST'])
