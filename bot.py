@@ -181,12 +181,10 @@ def is_menu_button(text):
 def is_member(user_id):
     try:
         member = bot.get_chat_member(PRIVATE_CHANNEL_ID, user_id)
-        if member.status in ['member', 'administrator', 'creator']:
-            return True
+        return member.status in ['member', 'administrator', 'creator']
     except Exception as e:
-        print("Member check error:", e)
-        return True  # প্রাইভেট চ্যানেলে error হলে জয়েন ধরে নেবে (সেফ)
-    return False
+        print("Channel member check error for user", user_id, ":", e)
+        return False  # error হলে জয়েন না ধরে নেবে (সঠিক চেকিং)
 
 # --- হেল্পার ফাংশন ---
 def get_user_lang(user_id):
