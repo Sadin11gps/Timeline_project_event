@@ -10,9 +10,10 @@ import os
 
 # --- কনফিগারেশন ---
 API_TOKEN = os.getenv('BOT_TOKEN', '8373048274:AAG5z--eYoWDpek1XeoY3eyXtdlsOhI0Et4')
-ADMIN_ID = 7702378694,7475964655
+ADMIN_IDS = [7702378694, 7475964655]  # দুইজন অ্যাডমিনের আইডি
 ADMIN_PASSWORD = "Rdsvai11"
-CHANNEL_USERNAME = "+nEOLGcA108U0OTJl"
+PRIVATE_CHANNEL_LINK = "https://t.me/+nEOLGcA108U0OTJl"
+PRIVATE_CHANNEL_ID = -1002404664158
 
 bot = telebot.TeleBot(API_TOKEN)
 
@@ -35,11 +36,11 @@ LANGUAGES = {
         'enter_amount': "🔢 Min $1.50\n📤 Enter Amount:",
         'enter_address': "📤 Enter TRX Address:",
         'withdrawn': "✅ Withdrawal submitted!",
-        'profile': "👤 <b>{}</b>\n\n\n💰 <b>Total Balance:</b> ${:.4f}\n\n📤 <b>Total Withdraw:</b> ${:.4f}\n\n🔒 <b>Account:</b> Active✅",
+        'profile': "👤 <b>{}</b>\n\n\n💰 <b>Total Balance:</b> \( {:.4f}\n\n📤 <b>Total Withdraw:</b> \){:.4f}\n\n🔒 <b>Account:</b> Active✅",
         'history_empty': "📭 You haven't completed any tasks yet.",
         'history_header': "📋 <b>Your Task History:</b>\n\n",
         'leaderboard': "🏆 <b>Top 10 Earners</b>\n\n",
-        'stats': "📊 <b>Bot Statistics</b>\n\n👥 Total Users: {}\n💰 Total Earned: ${:.4f}\n📤 Total Withdrawn: ${:.4f}",
+        'stats': "📊 <b>Bot Statistics</b>\n\n👥 Total Users: {}\n💰 Total Earned: \( {:.4f}\n📤 Total Withdrawn: \){:.4f}",
         'language': "🌍 Choose language:",
         'lang_set': "✅ Language set to English!",
         'no_pending_tasks': "📭 No pending tasks.",
@@ -66,11 +67,11 @@ LANGUAGES = {
         'enter_amount': "🔢 মিনিমাম $1.50\n📤 অ্যামাউন্ট দিন:",
         'enter_address': "📤 TRX অ্যাড্রেস দিন:",
         'withdrawn': "✅ উইথড্র রিকোয়েস্ট করা হয়েছে!",
-        'profile': "👤 <b>{}</b>\n\n\n💰 <b>টোটাল ব্যালেন্স:</b> ${:.4f}\n\n📤 <b>টোটাল উইথড্র:</b> ${:.4f}\n\n🔒 <b>অ্যাকাউন্ট:</b> অ্যাকটিভ✅",
+        'profile': "👤 <b>{}</b>\n\n\n💰 <b>টোটাল ব্যালেন্স:</b> \( {:.4f}\n\n📤 <b>টোটাল উইথড্র:</b> \){:.4f}\n\n🔒 <b>অ্যাকাউন্ট:</b> অ্যাকটিভ✅",
         'history_empty': "📭 আপনি এখনো কোনো টাস্ক করেননি।",
         'history_header': "📋 <b>আপনার টাস্ক হিস্ট্রি:</b>\n\n",
         'leaderboard': "🏆 <b>টপ ১০ আর্নার</b>\n\n",
-        'stats': "📊 <b>বট স্ট্যাটিস্টিকস</b>\n\n👥 টোটাল ইউজার: {}\n💰 টোটাল আর্ন: ${:.4f}\n📤 টোটাল উইথড্র: ${:.4f}",
+        'stats': "📊 <b>বট স্ট্যাটিস্টিকস</b>\n\n👥 টোটাল ইউজার: {}\n💰 টোটাল আর্ন: \( {:.4f}\n📤 টোটাল উইথড্র: \){:.4f}",
         'language': "🌍 ভাষা সিলেক্ট করুন:",
         'lang_set': "✅ ভাষা বাংলায় সেট করা হয়েছে!",
         'no_pending_tasks': "📭 কোনো পেন্ডিং টাস্ক নেই।",
@@ -176,10 +177,10 @@ def is_menu_button(text):
     buttons = ['💰 Balance', '📋 Tasks', '📤 Withdraw', '👤 Profile', '📋 History', '🤔 FAQ', '👥 My Referrals', '🌍 Language', '❌ Cancel', '🏠 Exit Admin', 'TRX', '✅ Account registered', '▶️ Start', '🏆 Leaderboard', '📊 Statistics', '🔙 Back', '🇺🇸 English', '🇧🇩 বাংলা', '📢 Broadcast', '📩 Send Message', '📝 Task History', '💸 Withdraw History', '💰 Manage Balance', '⚙️ Set Task Price']
     return text in buttons
 
-# --- চ্যানেল ভেরিফিকেশন ---
+# --- প্রাইভেট চ্যানেলে মেম্বার চেক ---
 def is_member(user_id):
     try:
-        member = bot.get_chat_member(f"@{CHANNEL_USERNAME}", user_id)
+        member = bot.get_chat_member(PRIVATE_CHANNEL_ID, user_id)
         return member.status in ['member', 'administrator', 'creator']
     except:
         return False
@@ -204,9 +205,9 @@ def start_cmd(message):
 
     if not is_member(user_id):
         markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("Join Channel", url=f"https://t.me/{CHANNEL_USERNAME}"))
+        markup.add(types.InlineKeyboardButton("Join Channel", url=PRIVATE_CHANNEL_LINK))
         markup.add(types.InlineKeyboardButton("I Joined ✅", callback_data="check_join"))
-        bot.send_message(user_id, texts['channel_join'] + f" https://t.me/{CHANNEL_USERNAME}", reply_markup=markup)
+        bot.send_message(user_id, texts['channel_join'] + f"\n{PRIVATE_CHANNEL_LINK}", reply_markup=markup)
         return
 
     conn = sqlite3.connect('socialbux.db', check_same_thread=False)
@@ -290,7 +291,7 @@ def statistics(message):
 # --- অ্যাডমিন লগইন ---
 @bot.message_handler(commands=['admin'])
 def admin_login(message):
-    if message.from_user.id == ADMIN_ID:
+    if message.from_user.id in ADMIN_IDS:
         msg = bot.send_message(message.chat.id, "🔐 Enter Admin Password:")
         bot.register_next_step_handler(msg, verify_admin)
 
@@ -301,18 +302,18 @@ def verify_admin(message):
         bot.send_message(message.chat.id, "❌ Wrong Password.")
 
 # --- অ্যাডমিনে Broadcast ---
-@bot.message_handler(func=lambda m: m.text == '📢 Broadcast' and m.from_user.id == ADMIN_ID)
+@bot.message_handler(func=lambda m: m.text == '📢 Broadcast' and m.from_user.id in ADMIN_IDS)
 def admin_broadcast(message):
-    admin_lang = get_user_lang(ADMIN_ID)
+    admin_lang = get_user_lang(message.from_user.id)
     texts = LANGUAGES[admin_lang]
-    msg = bot.send_message(ADMIN_ID, texts['admin_broadcast'])
+    msg = bot.send_message(message.chat.id, texts['admin_broadcast'])
     bot.register_next_step_handler(msg, broadcast_message)
 
 def broadcast_message(message):
-    admin_lang = get_user_lang(ADMIN_ID)
+    admin_lang = get_user_lang(message.from_user.id)
     texts = LANGUAGES[admin_lang]
     if message.text == '🏠 Exit Admin':
-        bot.send_message(ADMIN_ID, "Exited admin panel.", reply_markup=main_menu())
+        bot.send_message(message.chat.id, "Exited admin panel.", reply_markup=main_menu())
         return
 
     conn = sqlite3.connect('socialbux.db', check_same_thread=False)
@@ -329,42 +330,42 @@ def broadcast_message(message):
         except:
             pass
 
-    bot.send_message(ADMIN_ID, texts['broadcast_success'].format(sent_count), reply_markup=admin_menu())
+    bot.send_message(message.chat.id, texts['broadcast_success'].format(sent_count), reply_markup=admin_menu())
 
 # --- অ্যাডমিনে Send Message ---
-@bot.message_handler(func=lambda m: m.text == '📩 Send Message' and m.from_user.id == ADMIN_ID)
+@bot.message_handler(func=lambda m: m.text == '📩 Send Message' and m.from_user.id in ADMIN_IDS)
 def admin_send(message):
-    admin_lang = get_user_lang(ADMIN_ID)
+    admin_lang = get_user_lang(message.from_user.id)
     texts = LANGUAGES[admin_lang]
-    msg = bot.send_message(ADMIN_ID, texts['admin_send'])
+    msg = bot.send_message(message.chat.id, texts['admin_send'])
     bot.register_next_step_handler(msg, admin_send_user_id)
 
 def admin_send_user_id(message):
-    admin_lang = get_user_lang(ADMIN_ID)
+    admin_lang = get_user_lang(message.from_user.id)
     texts = LANGUAGES[admin_lang]
     if message.text == '🏠 Exit Admin':
-        bot.send_message(ADMIN_ID, "Exited admin panel.", reply_markup=main_menu())
+        bot.send_message(message.chat.id, "Exited admin panel.", reply_markup=main_menu())
         return
 
     try:
         target_id = int(message.text)
-        msg = bot.send_message(ADMIN_ID, texts['admin_send_msg'])
+        msg = bot.send_message(message.chat.id, texts['admin_send_msg'])
         bot.register_next_step_handler(msg, lambda m: admin_send_final(m, target_id))
     except:
-        bot.send_message(ADMIN_ID, "❌ Invalid User ID.", reply_markup=admin_menu())
+        bot.send_message(message.chat.id, "❌ Invalid User ID.", reply_markup=admin_menu())
 
 def admin_send_final(message, target_id):
-    admin_lang = get_user_lang(ADMIN_ID)
+    admin_lang = get_user_lang(message.from_user.id)
     texts = LANGUAGES[admin_lang]
     if message.text == '🏠 Exit Admin':
-        bot.send_message(ADMIN_ID, "Exited admin panel.", reply_markup=main_menu())
+        bot.send_message(message.chat.id, "Exited admin panel.", reply_markup=main_menu())
         return
 
     try:
         bot.send_message(target_id, message.text)
-        bot.send_message(ADMIN_ID, texts['send_success'], reply_markup=admin_menu())
+        bot.send_message(message.chat.id, texts['send_success'], reply_markup=admin_menu())
     except:
-        bot.send_message(ADMIN_ID, texts['user_not_found'], reply_markup=admin_menu())
+        bot.send_message(message.chat.id, texts['user_not_found'], reply_markup=admin_menu())
 
 # --- মেইন হ্যান্ডলার ---
 @bot.message_handler(func=lambda message: True)
@@ -461,7 +462,6 @@ def handle_all(message):
             cursor.execute("INSERT INTO task_history (user_id, details, status, date, amount) VALUES (?, ?, 'Pending', ?, ?)", (user_id, creds, date_n, price))
             tid = cursor.lastrowid
 
-            # pending_task ক্লিয়ার করে দিচ্ছি – আনলিমিটেড টাস্কের জন্য
             cursor.execute("UPDATE users SET pending_task = NULL WHERE id=?", (user_id,))
             
             conn.commit()
@@ -471,7 +471,8 @@ def handle_all(message):
 
             admin_msg = f"🔔 <b>New Task Submission</b>\n\n👤 <b>User ID:</b> <code>{user_id}</code>\n👤 <b>Name:</b> {fn_user}\n👤 <b>Username:</b> {u_name}\n\n      🔰<b>Task Information</b>🔰\n\n📧 <b>Gmail:</b> <code>{gmail}</code>\n🔑 <b>Pass:</b> <code>{password}</code>\n🔄 <b>Recovery:</b> <code>{recovery}</code>"
             adm_m = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton("Approve", callback_data=f"app_{user_id}_{tid}"), types.InlineKeyboardButton("Reject", callback_data=f"rej_{user_id}_{tid}"))
-            bot.send_message(ADMIN_ID, admin_msg, parse_mode="HTML", reply_markup=adm_m)
+            for admin_id in ADMIN_IDS:
+                bot.send_message(admin_id, admin_msg, parse_mode="HTML", reply_markup=adm_m)
         else:
             bot.send_message(user_id, "❌ No pending task found.")
         return
@@ -496,14 +497,14 @@ def handle_all(message):
         bot.register_next_step_handler(msg, process_withdraw_amount)
         return
 
-    elif user_id == ADMIN_ID:
+    elif user_id in ADMIN_IDS:
         if text == '📝 Task History':
             conn = sqlite3.connect('socialbux.db', check_same_thread=False)
             query = "SELECT task_history.id, task_history.user_id, task_history.details, users.first_name, users.username FROM task_history JOIN users ON task_history.user_id = users.id WHERE task_history.status = 'Pending' LIMIT 10"
             rows = conn.execute(query).fetchall()
             conn.close()
             if not rows:
-                bot.send_message(ADMIN_ID, texts['no_pending_tasks'])
+                bot.send_message(user_id, texts['no_pending_tasks'])
                 return
             for r in rows:
                 try:
@@ -514,7 +515,7 @@ def handle_all(message):
                     recovery = parts[4].split(': ')[1]
                     hist_msg = f"🔔 <b>New Task Submission</b>\n\n👤 <b>User ID:</b> <code>{uid}</code>\n👤 <b>Name:</b> {name}\n\n      🔰<b>Task Information</b>🔰\n\n📧 <b>Gmail:</b> <code>{gmail}</code>\n🔑 <b>Pass:</b> <code>{password}</code>\n🔄 <b>Recovery:</b> <code>{recovery}</code>"
                     markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton("Approve", callback_data=f"app_{uid}_{tid}"), types.InlineKeyboardButton("Reject", callback_data=f"rej_{uid}_{tid}"))
-                    bot.send_message(ADMIN_ID, hist_msg, parse_mode="HTML", reply_markup=markup)
+                    bot.send_message(user_id, hist_msg, parse_mode="HTML", reply_markup=markup)
                 except:
                     continue
             return
@@ -526,7 +527,7 @@ def handle_all(message):
             conn.close()
             
             if not rows:
-                bot.send_message(ADMIN_ID, texts['no_pending_withdraw'])
+                bot.send_message(user_id, texts['no_pending_withdraw'])
                 return
 
             for row in rows:
@@ -543,16 +544,16 @@ def handle_all(message):
                 markup = types.InlineKeyboardMarkup()
                 markup.add(types.InlineKeyboardButton("✅ Approve", callback_data=f"wapp_{uid}_{wid}"),
                            types.InlineKeyboardButton("❌ Reject", callback_data=f"wrej_{uid}_{wid}"))
-                bot.send_message(ADMIN_ID, msg_text, parse_mode="HTML", reply_markup=markup)
+                bot.send_message(user_id, msg_text, parse_mode="HTML", reply_markup=markup)
             return
 
         elif text == '⚙️ Set Task Price':
-            msg = bot.send_message(ADMIN_ID, "🔢 Enter new task price (e.g., 0.15):")
+            msg = bot.send_message(user_id, "🔢 Enter new task price (e.g., 0.15):")
             bot.register_next_step_handler(msg, admin_set_price_step)
             return
 
         elif text == '💰 Manage Balance':
-            msg = bot.send_message(ADMIN_ID, "Enter User ID:")
+            msg = bot.send_message(user_id, "Enter User ID:")
             bot.register_next_step_handler(msg, admin_balance_id_step)
             return
 
@@ -593,7 +594,8 @@ def process_withdraw_address(message, amount):
     conn.close()
     
     try:
-        bot.send_message(ADMIN_ID, f"🔔 New Withdraw Request from ID: {user_id}\nAmount: ${amount}")
+        for admin_id in ADMIN_IDS:
+            bot.send_message(admin_id, f"🔔 New Withdraw Request from ID: {user_id}\nAmount: ${amount}")
     except:
         pass
     
@@ -601,7 +603,7 @@ def process_withdraw_address(message, amount):
 
 def admin_balance_id_step(message):
     t_id = message.text
-    msg = bot.send_message(ADMIN_ID, "Enter Amount:")
+    msg = bot.send_message(message.chat.id, "Enter Amount:")
     bot.register_next_step_handler(msg, lambda m: admin_balance_save_step(m, t_id))
 
 def admin_balance_save_step(message, t_id):
@@ -611,9 +613,9 @@ def admin_balance_save_step(message, t_id):
         conn.execute("UPDATE users SET balance = balance + ? WHERE id=?", (amt, t_id))
         conn.commit()
         conn.close()
-        bot.send_message(ADMIN_ID, "✅ Success.")
+        bot.send_message(message.chat.id, "✅ Success.")
     except:
-        bot.send_message(ADMIN_ID, "Error.")
+        bot.send_message(message.chat.id, "Error.")
 
 def admin_set_price_step(message):
     try:
@@ -622,9 +624,9 @@ def admin_set_price_step(message):
         conn.execute("INSERT OR REPLACE INTO settings (key, value) VALUES ('task_price', ?)", (new_price,))
         conn.commit()
         conn.close()
-        bot.send_message(ADMIN_ID, f"✅ Task price updated to ${new_price:.4f}", reply_markup=admin_menu())
+        bot.send_message(message.chat.id, f"✅ Task price updated to ${new_price:.4f}", reply_markup=admin_menu())
     except ValueError:
-        bot.send_message(ADMIN_ID, "❌ Invalid number. Please enter a valid amount.", reply_markup=admin_menu())
+        bot.send_message(message.chat.id, "❌ Invalid number. Please enter a valid amount.", reply_markup=admin_menu())
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_handler(call):
@@ -677,7 +679,7 @@ def callback_handler(call):
     except Exception as e:
         print("Error in callback:", e)
 
-print("🤖 Crazy Money Bux Bot is Running - Unlimited Tasks & Everything Fixed!")
+print("🤖 Crazy Money Bux Bot is Running - Dual Admin Support + Everything Fixed!")
 
 # --- Webhook routes ---
 @app.route('/' + API_TOKEN, methods=['POST'])
