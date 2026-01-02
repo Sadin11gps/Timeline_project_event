@@ -150,7 +150,7 @@ def admin_menu():
     markup.add('📝 Task History', '💸 Withdraw History')
     markup.add('💰 Manage Balance', '⚙️ Set Task Price')
     markup.add('📢 Broadcast', '📩 Send Message')
-    markup.add('👥 User List', '🏠 Exit Admin')  # এখানে User List আছে
+    markup.add('👥 User List', '🏠 Exit Admin')
     return markup
 
 def language_menu():
@@ -643,7 +643,7 @@ def callback_handler(call):
     except Exception as e:
         print("Error in callback:", e)
 
-print("🤖 Gmail Factory Bot is Running - Final Complete Version with User List!")
+print("🤖 Gmail Factory Bot is Running - FINAL FIXED VERSION!")
 
 # --- Webhook routes ---
 @app.route('/' + API_TOKEN, methods=['POST'])
