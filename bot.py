@@ -460,6 +460,10 @@ def handle_all(message):
             date_n = datetime.now().strftime("%Y-%m-%d %H:%M")
             cursor.execute("INSERT INTO task_history (user_id, details, status, date, amount) VALUES (?, ?, 'Pending', ?, ?)", (user_id, creds, date_n, price))
             tid = cursor.lastrowid
+
+            # pending_task ক্লিয়ার করে দিচ্ছি – আনলিমিটেড টাস্কের জন্য
+            cursor.execute("UPDATE users SET pending_task = NULL WHERE id=?", (user_id,))
+            
             conn.commit()
             conn.close()
 
@@ -673,7 +677,7 @@ def callback_handler(call):
     except Exception as e:
         print("Error in callback:", e)
 
-print("🤖 Crazy Money Bux Bot is Running - Everything Fixed & Real-Time!")
+print("🤖 Crazy Money Bux Bot is Running - Unlimited Tasks & Everything Fixed!")
 
 # --- Webhook routes ---
 @app.route('/' + API_TOKEN, methods=['POST'])
