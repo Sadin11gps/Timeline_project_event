@@ -280,8 +280,8 @@ def statistics(message):
 
     conn = sqlite3.connect('socialbux.db', check_same_thread=False)
     total_users = conn.execute("SELECT COUNT(*) FROM users").fetchone()[0]
-    total_earned = conn.execute("SELECT SUM(balance) FROM users").fetchone()[0] or 0
-    total_withdrawn = conn.execute("SELECT SUM(amount) FROM withdraw_history WHERE status='Paid'").fetchone()[0] or 0
+    total_earned = conn.execute("SELECT SUM(balance) FROM users").fetchone()[0] or 0.0
+    total_withdrawn = conn.execute("SELECT SUM(amount) FROM withdraw_history WHERE status='Paid'").fetchone()[0] or 0.0
     conn.close()
 
     text = texts['stats'].format(total_users, total_earned, total_withdrawn)
@@ -463,10 +463,8 @@ def handle_all(message):
             conn.commit()
             conn.close()
 
-            # ইউজারকে কনফার্মেশন মেসেজ
             bot.send_message(user_id, texts['submitted'], reply_markup=main_menu())
 
-            # অ্যাডমিনকে নোটিফিকেশন
             admin_msg = f"🔔 <b>New Task Submission</b>\n\n👤 <b>User ID:</b> <code>{user_id}</code>\n👤 <b>Name:</b> {fn_user}\n👤 <b>Username:</b> {u_name}\n\n      🔰<b>Task Information</b>🔰\n\n📧 <b>Gmail:</b> <code>{gmail}</code>\n🔑 <b>Pass:</b> <code>{password}</code>\n🔄 <b>Recovery:</b> <code>{recovery}</code>"
             adm_m = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton("Approve", callback_data=f"app_{user_id}_{tid}"), types.InlineKeyboardButton("Reject", callback_data=f"rej_{user_id}_{tid}"))
             bot.send_message(ADMIN_ID, admin_msg, parse_mode="HTML", reply_markup=adm_m)
@@ -675,7 +673,7 @@ def callback_handler(call):
     except Exception as e:
         print("Error in callback:", e)
 
-print("🤖 Crazy Money Bux Bot is Running - All Buttons & Task Submission Fixed!")
+print("🤖 Crazy Money Bux Bot is Running - Everything Fixed & Real-Time!")
 
 # --- Webhook routes ---
 @app.route('/' + API_TOKEN, methods=['POST'])
