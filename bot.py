@@ -9,8 +9,8 @@ from datetime import datetime
 import os
 
 # --- কনফিগারেশন ---
-API_TOKEN = os.getenv('BOT_TOKEN', '8059084521:AAGuVxr-6-X0Izld_uOD4nazPqd3yaKQgzo')
-ADMIN_ID = 7702378694
+API_TOKEN = os.getenv('BOT_TOKEN', '8373048274:AAG5z--eYoWDpek1XeoY3eyXtdlsOhI0Et4')
+ADMIN_ID = 7702378694,7475964655
 ADMIN_PASSWORD = "Rdsvai11"
 CHANNEL_USERNAME = "amrrdsteam"
 
