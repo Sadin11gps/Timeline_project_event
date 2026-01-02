@@ -181,7 +181,7 @@ def get_user_lang(user_id):
     conn.close()
     return row[0] if row and row[0] else 'en'
 
-# --- /start (কোনো ভেরিফাই নেই) ---
+# --- /start ---
 @bot.message_handler(commands=['start'])
 def start_cmd(message):
     user_id = message.from_user.id
@@ -228,6 +228,8 @@ def admin_login(message):
     if message.from_user.id in ADMIN_IDS:
         msg = bot.send_message(message.chat.id, "🔐 Enter Admin Password:")
         bot.register_next_step_handler(msg, verify_admin)
+    else:
+        bot.send_message(message.chat.id, "❌ You are not authorized.")
 
 def verify_admin(message):
     if message.text == ADMIN_PASSWORD:
@@ -643,7 +645,7 @@ def callback_handler(call):
     except Exception as e:
         print("Error in callback:", e)
 
-print("🤖 Gmail Factory Bot is Running - FINAL FIXED VERSION!")
+print("🤖 Gmail Factory Bot is Running - Final Complete Version!")
 
 # --- Webhook routes ---
 @app.route('/' + API_TOKEN, methods=['POST'])
