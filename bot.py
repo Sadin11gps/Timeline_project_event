@@ -5,7 +5,6 @@ from telebot import types
 import sqlite3
 import random
 import string
-import re
 from datetime import datetime
 import os
 
@@ -446,38 +445,43 @@ def handle_all(message):
         return
 
     elif text == '✅ Account registered':
-        try:
-            price = get_task_price()
-            fn_user = message.from_user.first_name
-            u_name = f"@{message.from_user.username}" if message.from_user.username else "N/A"
-            conn = sqlite3.connect('socialbux.db', check_same_thread=False)
-            cursor = conn.cursor()
-            res = cursor.execute("SELECT pending_task FROM users WHERE id=?", (user_id,)).fetchone()
-            if res and res[0]:
-                creds = res[0]
-                parts = creds.split('|')
-                gmail = parts[2].split(': ')[1]
-                password = parts[3].split(': ')[1]
-                recovery = parts[4].split(': ')[1]
-                date_n = datetime.now().strftime("%Y-%m-%d %H:%M")
-                cursor.execute("INSERT INTO task_history (user_id, details, status, date, amount) VALUES (?, ?, 'Pending', ?, ?)", (user_id, creds, date_n, price))
-                tid = cursor.lastrowid
-                conn.commit()
-                conn.close()
-                bot.send_message(user_id, texts['submitted'], reply_markup=main_menu())
-                admin_msg = f"🔔 <b>New Task Submission</b>\n\n👤 <b>User ID:</b> <code>{user_id}</code>\n👤 <b>Name:</b> {fn_user}\n👤 <b>Username:</b> {u_name}\n\n      🔰<b>Task Information</b>🔰\n\n📧 <b>Gmail:</b> <code>{gmail}</code>\n🔑 <b>Pass:</b> <code>{password}</code>\n🔄 <b>Recovery:</b> <code>{recovery}</code>"
-                adm_m = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton("Approve", callback_data=f"app_{user_id}_{tid}"), types.InlineKeyboardButton("Reject", callback_data=f"rej_{user_id}_{tid}"))
-                bot.send_message(ADMIN_ID, admin_msg, parse_mode="HTML", reply_markup=adm_m)
-        except:
-            bot.send_message(user_id, "❌ Error.")
+        price = get_task_price()
+        fn_user = message.from_user.first_name
+        u_name = f"@{message.from_user.username}" if message.from_user.username else "N/A"
+        conn = sqlite3.connect('socialbux.db', check_same_thread=False)
+        cursor = conn.cursor()
+        res = cursor.execute("SELECT pending_task FROM users WHERE id=?", (user_id,)).fetchone()
+        if res and res[0]:
+            creds = res[0]
+            parts = creds.split('|')
+            gmail = parts[2].split(': ')[1]
+            password = parts[3].split(': ')[1]
+            recovery = parts[4].split(': ')[1]
+            date_n = datetime.now().strftime("%Y-%m-%d %H:%M")
+            cursor.execute("INSERT INTO task_history (user_id, details, status, date, amount) VALUES (?, ?, 'Pending', ?, ?)", (user_id, creds, date_n, price))
+            tid = cursor.lastrowid
+            conn.commit()
+            conn.close()
+
+            # ইউজারকে কনফার্মেশন মেসেজ
+            bot.send_message(user_id, texts['submitted'], reply_markup=main_menu())
+
+            # অ্যাডমিনকে নোটিফিকেশন
+            admin_msg = f"🔔 <b>New Task Submission</b>\n\n👤 <b>User ID:</b> <code>{user_id}</code>\n👤 <b>Name:</b> {fn_user}\n👤 <b>Username:</b> {u_name}\n\n      🔰<b>Task Information</b>🔰\n\n📧 <b>Gmail:</b> <code>{gmail}</code>\n🔑 <b>Pass:</b> <code>{password}</code>\n🔄 <b>Recovery:</b> <code>{recovery}</code>"
+            adm_m = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton("Approve", callback_data=f"app_{user_id}_{tid}"), types.InlineKeyboardButton("Reject", callback_data=f"rej_{user_id}_{tid}"))
+            bot.send_message(ADMIN_ID, admin_msg, parse_mode="HTML", reply_markup=adm_m)
+        else:
+            bot.send_message(user_id, "❌ No pending task found.")
         return
 
     elif text == '👥 My Referrals':
         conn = sqlite3.connect('socialbux.db', check_same_thread=False)
         res = conn.execute("SELECT ref_count, total_ref_earn FROM users WHERE id=?", (user_id,)).fetchone()
         conn.close()
+        ref_count = res[0] if res else 0
+        ref_earn = res[1] if res else 0.0
         r_link = f"https://t.me/{bot.get_me().username}?start={user_id}"
-        bot.send_message(user_id, texts['referrals'].format(res[0], res[1], r_link))
+        bot.send_message(user_id, texts['referrals'].format(ref_count, ref_earn, r_link))
         return
 
     elif text == '📤 Withdraw':
@@ -671,7 +675,7 @@ def callback_handler(call):
     except Exception as e:
         print("Error in callback:", e)
 
-print("🤖 Crazy Money Bux Bot is Running - Block/Unblock Buttons Removed!")
+print("🤖 Crazy Money Bux Bot is Running - All Buttons & Task Submission Fixed!")
 
 # --- Webhook routes ---
 @app.route('/' + API_TOKEN, methods=['POST'])
