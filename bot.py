@@ -20,7 +20,7 @@ app = Flask(__name__)
 # --- ল্যাঙ্গুয়েজ ডিকশনারি ---
 LANGUAGES = {
     'en': {
-        'welcome': "👋 Welcome!\n\nℹ️ This bot helps you earn money by doing simple tasks.\n\nBy using this Bot, you automatically agree to the Terms of Use.👉 https://telegra.ph/%E6%BC%AB-G%E1%97%B0%E1%97%A9I%E1%92%AA-%F0%9D%99%B5%F0%9D%99%B0%F0%9D%99%B2%F0%9D%9A%83%F0%9D%99%BE%F0%9D%9A%81%F0%9D%9A%88-%E6%BC%AB-01-03",
+        'welcome': "👋 Welcome!\n\nℹ️ This bot helps you earn money by doing simple tasks.\n\nBy using this Bot, you automatically agree to the Terms of Use.👉 https://telegra.ph/FAQ----CRAZY-MONEY-BUX-12-25-2",
         'balance': "💰 Your balance: ${:.4f}",
         'tasks': "👇 Please select a task:",
         'task_desc': "⏳ Review time: 74 min ⏳\n\n📋 Task: 📱 G account (FAST CHECK)\n\n📄 Description: 🔐 MANDATORY!\nYou must use only the email and password provided by the Telegram bot to register.",
@@ -32,7 +32,7 @@ LANGUAGES = {
         'enter_amount': "🔢 Min $1.50\n📤 Enter Amount:",
         'enter_address': "📤 Enter TRX Address:",
         'withdrawn': "✅ Withdrawal submitted!",
-        'profile': "👤 <b>{}</b>\n\n💰 <b>Total Balance:</b> ${:.4f}\n📤 <b>Total Withdraw:</b> ${:.4f}\n🔒 <b>Account:</b> Active✅",
+        'profile': "👤 <b>{}</b>\n\n💰 <b>Total Balance:</b> \( {:.4f}\n📤 <b>Total Withdraw:</b> \){:.4f}\n🔒 <b>Account:</b> Active✅",
         'history_empty': "📭 You haven't completed any tasks yet.",
         'history_header': "📋 <b>Your Task History:</b>\n\n",
         'language': "🌍 Choose language:",
@@ -46,11 +46,11 @@ LANGUAGES = {
         'send_success': "✅ Message sent to user!",
         'user_not_found': "❌ User not found.",
         'user_list_header': "👥 <b>All Users List:</b>\n\n",
-        'user_list_format': "🆔 <b>ID:</b> <code>{}</code>\n👤 <b>Name:</b> {} {}\n💰 <b>Balance:</b> ${:.4f}\n👥 <b>Referrals:</b> {}\n📤 <b>Paid Withdraw:</b> ${:.4f}\n\n",
+        'user_list_format': "🆔 <b>ID:</b> <code>{}</code>\n👤 <b>Name:</b> {} {}\n💰 <b>Balance:</b> \( {:.4f}\n👥 <b>Referrals:</b> {}\n📤 <b>Paid Withdraw:</b> \){:.4f}\n\n",
         'no_users': "📭 No users yet.",
     },
     'bn': {
-        'welcome': "👋 স্বাগতম!\n\nℹ️ এই বটে সিম্পল টাস্ক করে ডলার আর্ন করুন।\n\nবট ব্যবহার করে আপনি অটোম্যাটিক টার্মস অ্যাগ্রি করছেন।👉 https://telegra.ph/%E6%BC%AB-G%E1%97%B0%E1%97%A9I%E1%92%AA-%F0%9D%99%B5%F0%9D%99%B0%F0%9D%99%B2%F0%9D%9A%83%F0%9D%99%BE%F0%9D%9A%81%F0%9D%9A%88-%E6%BC%AB-01-03",
+        'welcome': "👋 স্বাগতম!\n\nℹ️ এই বটে সিম্পল টাস্ক করে ডলার আর্ন করুন।\n\nবট ব্যবহার করে আপনি অটোম্যাটিক টার্মস অ্যাগ্রি করছেন।👉 https://telegra.ph/FAQ----CRAZY-MONEY-BUX-12-25-2",
         'balance': "💰 আপনার ব্যালেন্স: ${:.4f}",
         'tasks': "👇 একটা টাস্ক সিলেক্ট করুন:",
         'task_desc': "⏳ রিভিউ টাইম: ৭৪ মিনিট ⏳\n\n📋 টাস্ক: 📱 G account (FAST CHECK)\n\n📄 বর্ণনা: 🔐 অবশ্যই বট দেওয়া ইমেইল ও পাসওয়ার্ড দিয়ে রেজিস্টার করতে হবে।",
@@ -62,7 +62,7 @@ LANGUAGES = {
         'enter_amount': "🔢 মিনিমাম $1.50\n📤 অ্যামাউন্ট দিন:",
         'enter_address': "📤 TRX অ্যাড্রেস দিন:",
         'withdrawn': "✅ উইথড্র রিকোয়েস্ট করা হয়েছে!",
-        'profile': "👤 <b>{}</b>\n\n💰 <b>টোটাল ব্যালেন্স:</b> ${:.4f}\n📤 <b>টোটাল উইথড্র:</b> ${:.4f}\n🔒 <b>অ্যাকাউন্ট:</b> অ্যাকটিভ✅",
+        'profile': "👤 <b>{}</b>\n\n💰 <b>টোটাল ব্যালেন্স:</b> \( {:.4f}\n📤 <b>টোটাল উইথড্র:</b> \){:.4f}\n🔒 <b>অ্যাকাউন্ট:</b> অ্যাকটিভ✅",
         'history_empty': "📭 আপনি এখনো কোনো টাস্ক করেননি।",
         'history_header': "📋 <b>আপনার টাস্ক হিস্ট্রি:</b>\n\n",
         'language': "🌍 ভাষা সিলেক্ট করুন:",
@@ -76,7 +76,7 @@ LANGUAGES = {
         'send_success': "✅ মেসেজ পাঠানো হয়েছে!",
         'user_not_found': "❌ ইউজার পাওয়া যায়নি।",
         'user_list_header': "👥 <b>সব ইউজারের লিস্ট:</b>\n\n",
-        'user_list_format': "🆔 <b>ID:</b> <code>{}</code>\n👤 <b>নাম:</b> {} {}\n💰 <b>ব্যালেন্স:</b> ${:.4f}\n👥 <b>রেফারেল:</b> {}\n📤 <b>পেইড উইথড্র:</b> ${:.4f}\n\n",
+        'user_list_format': "🆔 <b>ID:</b> <code>{}</code>\n👤 <b>নাম:</b> {} {}\n💰 <b>ব্যালেন্স:</b> \( {:.4f}\n👥 <b>রেফারেল:</b> {}\n📤 <b>পেইড উইথড্র:</b> \){:.4f}\n\n",
         'no_users': "📭 এখনো কোনো ইউজার নেই।",
     }
 }
@@ -183,7 +183,8 @@ def get_user_lang(user_id):
 
 # --- /start ---
 @bot.message_handler(commands=['start'])
-def start_cmd(message):FAQ----CRAZY-MONEY-BUX-12-25-2er.id
+def start_cmd(message):
+    user_id = message.from_user.id
     ref_id = message.text.split()[1] if len(message.text.split()) > 1 else None
 
     lang = get_user_lang(user_id)
@@ -353,7 +354,7 @@ def handle_all(message):
         return
 
     elif text == '🤔 FAQ':
-        faq_msg = "🤔 <b>View help at:</b>\n📄 https://telegra.ph/%E6%BC%AB-G%E1%97%B0%E1%97%A9I%E1%92%AA-%F0%9D%99%B5%F0%9D%99%B0%F0%9D%99%B2%F0%9D%9A%83%F0%9D%99%BE%F0%9D%9A%81%F0%9D%9A%88-%E6%BC%AB-01-03"
+        faq_msg = "🤔 <b>View help at:</b>\n📄 https://telegra.ph/FAQ----CRAZY-MONEY-BUX-12-25-2"
         bot.send_message(user_id, faq_msg, parse_mode="HTML")
         return
 
