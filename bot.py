@@ -20,7 +20,7 @@ app = Flask(__name__)
 # --- ল্যাঙ্গুয়েজ ডিকশনারি ---
 LANGUAGES = {
     'en': {
-        'welcome': "👋 Welcome!\n\nℹ️ This bot helps you earn money by doing simple tasks.\n\nBy using this Bot, you automatically agree to the Terms of Use.👉 https://telegra.ph/FAQ----CRAZY-MONEY-BUX-12-25-2",
+        'welcome': "👋 Welcome!\n\nℹ️ This bot helps you earn money by doing simple tasks.\n\nBy using this Bot, you automatically agree to the Terms of Use.👉 https://telegra.ph/%E6%BC%AB-G%E1%97%B0%E1%97%A9I%E1%92%AA-%F0%9D%99%B5%F0%9D%99%B0%F0%9D%99%B2%F0%9D%9A%83%F0%9D%99%BE%F0%9D%9A%81%F0%9D%9A%88-%E6%BC%AB-01-03",
         'balance': "💰 Your balance: ${:.4f}",
         'tasks': "👇 Please select a task:",
         'task_desc': "⏳ Review time: 74 min ⏳\n\n📋 Task: 📱 G account (FAST CHECK)\n\n📄 Description: 🔐 MANDATORY!\nYou must use only the email and password provided by the Telegram bot to register.",
@@ -50,7 +50,7 @@ LANGUAGES = {
         'no_users': "📭 No users yet.",
     },
     'bn': {
-        'welcome': "👋 স্বাগতম!\n\nℹ️ এই বটে সিম্পল টাস্ক করে ডলার আর্ন করুন।\n\nবট ব্যবহার করে আপনি অটোম্যাটিক টার্মস অ্যাগ্রি করছেন।👉 https://telegra.ph/FAQ----CRAZY-MONEY-BUX-12-25-2",
+        'welcome': "👋 স্বাগতম!\n\nℹ️ এই বটে সিম্পল টাস্ক করে ডলার আর্ন করুন।\n\nবট ব্যবহার করে আপনি অটোম্যাটিক টার্মস অ্যাগ্রি করছেন।👉 https://telegra.ph/%E6%BC%AB-G%E1%97%B0%E1%97%A9I%E1%92%AA-%F0%9D%99%B5%F0%9D%99%B0%F0%9D%99%B2%F0%9D%9A%83%F0%9D%99%BE%F0%9D%9A%81%F0%9D%9A%88-%E6%BC%AB-01-03",
         'balance': "💰 আপনার ব্যালেন্স: ${:.4f}",
         'tasks': "👇 একটা টাস্ক সিলেক্ট করুন:",
         'task_desc': "⏳ রিভিউ টাইম: ৭৪ মিনিট ⏳\n\n📋 টাস্ক: 📱 G account (FAST CHECK)\n\n📄 বর্ণনা: 🔐 অবশ্যই বট দেওয়া ইমেইল ও পাসওয়ার্ড দিয়ে রেজিস্টার করতে হবে।",
@@ -183,8 +183,7 @@ def get_user_lang(user_id):
 
 # --- /start ---
 @bot.message_handler(commands=['start'])
-def start_cmd(message):
-    user_id = message.from_user.id
+def start_cmd(message):FAQ----CRAZY-MONEY-BUX-12-25-2er.id
     ref_id = message.text.split()[1] if len(message.text.split()) > 1 else None
 
     lang = get_user_lang(user_id)
@@ -354,7 +353,7 @@ def handle_all(message):
         return
 
     elif text == '🤔 FAQ':
-        faq_msg = "🤔 <b>View help at:</b>\n📄 https://telegra.ph/FAQ----CRAZY-MONEY-BUX-12-25-2"
+        faq_msg = "🤔 <b>View help at:</b>\n📄 https://telegra.ph/%E6%BC%AB-G%E1%97%B0%E1%97%A9I%E1%92%AA-%F0%9D%99%B5%F0%9D%99%B0%F0%9D%99%B2%F0%9D%9A%83%F0%9D%99%BE%F0%9D%9A%81%F0%9D%9A%88-%E6%BC%AB-01-03"
         bot.send_message(user_id, faq_msg, parse_mode="HTML")
         return
 
